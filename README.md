@@ -1,50 +1,50 @@
 # Claude Code Agents
 
-Colección de agentes personales para [Claude Code](https://claude.ai/code) — la CLI oficial de Anthropic.
+A collection of personal agents for [Claude Code](https://claude.ai/code) — Anthropic's official CLI.
 
 ---
 
-## ¿Qué es esto?
+## What is this?
 
-Este repositorio contiene agentes personalizados (`subagents`) listos para usar con Claude Code. Cada agente tiene un propósito concreto y está optimizado para responder con precisión dentro de su dominio.
+This repository contains custom subagents ready to use with Claude Code. Each agent has a specific purpose and is optimized to respond accurately within its domain.
 
-También incluye una **cheatsheet interactiva** con todos los comandos, flags y shortcuts de Claude Code.
+It also includes an **interactive cheatsheet** covering all Claude Code commands, flags, and shortcuts.
 
 ---
 
-## Cómo instalar los agentes
+## How to install agents
 
-Copia el archivo `.md` del agente que quieras en tu directorio de agentes:
+Copy the `.md` file of the agent you want into your agents directory:
 
 ```bash
-# Agente disponible globalmente (todos los proyectos)
+# Available globally (all projects)
 ~/.claude/agents/
 
-# Agente solo para el proyecto actual
+# Available only for the current project
 .claude/agents/
 ```
 
-Después reinicia Claude Code o usa `/agents` para verificar que está disponible.
+Then restart Claude Code or run `/agents` to verify it's available.
 
 ---
 
-## Agentes disponibles
+## Available agents
 
 ### `claude-code-expert`
 
-> Experto en todo lo relacionado con Claude Code — la CLI oficial de Anthropic.
+> Expert on everything related to Claude Code — Anthropic's official agentic CLI.
 
-**Cuándo usarlo:** Cuando necesites ayuda con instalación, comandos CLI, slash commands, atajos de teclado, configuración, CLAUDE.md, sistema de memoria, integraciones MCP, hooks, subagentes, flujos de trabajo, troubleshooting o gestión de costes.
+**When to use it:** When you need help with installation, CLI commands, slash commands, keyboard shortcuts, configuration, CLAUDE.md, memory system, MCP integrations, hooks, subagents, workflows, troubleshooting, or cost management.
 
-**Modelo:** `sonnet` · **Color:** amarillo
+**Model:** `sonnet` · **Color:** yellow
 
-**Ejemplos de uso:**
-- *"¿Cómo uso Claude Code en un pipeline CI/CD sin prompts interactivos?"*
-- *"Mi CLAUDE.md no se está aplicando, ¿por qué?"*
-- *"¿Cómo ejecuto ESLint automáticamente cada vez que Claude edita un archivo?"*
-- *"¿Puedo tener Claude trabajando en dos features al mismo tiempo?"*
+**Example prompts:**
+- *"How do I use Claude Code in a CI/CD pipeline without interactive prompts?"*
+- *"My CLAUDE.md instructions aren't being applied, why?"*
+- *"How do I automatically run ESLint every time Claude edits a file?"*
+- *"Can Claude work on two features at the same time?"*
 
-**Instalación:**
+**Install:**
 ```bash
 cp agents/claude-code-expert.md ~/.claude/agents/
 ```
@@ -53,34 +53,34 @@ cp agents/claude-code-expert.md ~/.claude/agents/
 
 ## Cheatsheet
 
-El archivo [`claude-code-cheatsheet.html`](./claude-code-cheatsheet.html) es una referencia visual completa de Claude Code con:
+The [`claude-code-cheatsheet.html`](./claude-code-cheatsheet.html) file is a complete visual reference for Claude Code including:
 
-- Instalación y comandos CLI
-- Todos los slash commands organizados por categoría
-- Flags CLI detallados
-- Sistema de memoria (CLAUDE.md + Auto Memory)
-- Flujos de trabajo y pipelines
-- Atajos de teclado
+- Installation and CLI commands
+- All slash commands organized by category
+- Detailed CLI flags
+- Memory system (CLAUDE.md + Auto Memory)
+- Workflows and pipelines
+- Keyboard shortcuts
 
-Ábrelo en el navegador o imprime/guarda como PDF desde el botón integrado.
+Open it in the browser or print/save as PDF using the built-in button.
 
 ---
 
-## Estructura del repo
+## Repo structure
 
 ```
 claude-code-agents/
 ├── agents/
-│   └── claude-code-expert.md      # Agente experto en Claude Code
-└── claude-code-cheatsheet.html    # Cheatsheet visual interactiva
+│   └── claude-code-expert.md      # Expert agent on Claude Code
+└── claude-code-cheatsheet.html    # Interactive visual cheatsheet
 ```
 
 ---
 
-## Contribuir
+## Contributing
 
-Si tienes un agente útil que quieras compartir, abre un PR con el archivo `.md` en la carpeta `agents/` siguiendo el formato estándar de Claude Code subagents.
+If you have a useful agent you'd like to share, open a PR with the `.md` file in the `agents/` folder following the standard Claude Code subagents format.
 
 ---
 
-*Hecho con Claude Code*
+*Built with Claude Code*
