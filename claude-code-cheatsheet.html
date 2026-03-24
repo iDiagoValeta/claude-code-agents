@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Cheatsheet</title>
+<style>
+  :root {
+    --bg:      #0d1117;
+    --surface: #161b22;
+    --border:  #30363d;
+    --text:    #e6edf3;
+    --muted:   #8b949e;
+    --red:     #f78166;
+    --blue:    #79c0ff;
+    --green:   #56d364;
+    --yellow:  #e3b341;
+    --purple:  #d2a8ff;
+    --code-bg: #1c2128;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .topbar { background: var(--red); height: 4px; }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 18px 8px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky; top: 0; z-index: 99;
+  }
+  header h1 { font-size: 20px; }
+  header h1 span.c { color: var(--red); }
+  header .url { font-family: monospace; font-size: 10px; color: var(--muted); }
+  header .print-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+  }
+  header .print-btn:hover { background: var(--border); }
+
+  /* ── MASONRY-STYLE 2 columns ── */
+  .masonry {
+    columns: 2;
+    column-gap: 14px;
+    padding: 12px 16px 20px;
+  }
+
+  /* Each card stays together, never splits across columns */
+  .card {
+    break-inside: avoid;
+    margin-bottom: 10px;
+  }
+
+  /* ── Section headers ── */
+  .sec {
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-weight: 700;
+    font-size: 11px;
+    color: var(--bg);
+    margin-bottom: 5px;
+    letter-spacing: .3px;
+  }
+  .sec-red    { background: var(--red); }
+  .sec-yellow { background: var(--yellow); }
+  .sec-blue   { background: var(--blue); }
+  .sec-green  { background: var(--green); }
+  .sec-purple { background: var(--purple); }
+
+  /* ── Subheaders ── */
+  h3 {
+    font-size: 10.5px;
+    color: var(--blue);
+    margin: 7px 0 3px;
+    font-weight: 700;
+  }
+
+  /* ── Tables ── */
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 1px 3px; vertical-align: top; }
+  td:first-child { white-space: nowrap; padding-right: 8px; }
+
+  .cmd   { font-family: "SF Mono", Consolas, monospace; color: var(--green);  font-size: 11px; }
+  .flag  { font-family: "SF Mono", Consolas, monospace; color: var(--yellow); font-size: 11px; }
+  .slash { font-family: "SF Mono", Consolas, monospace; color: var(--purple); font-size: 11px; }
+  .desc  { color: var(--text); font-size: 11px; }
+  .muted { color: var(--muted); font-size: 10.5px; font-style: italic; }
+
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 10.5px;
+    color: var(--green);
+    line-height: 1.65;
+    margin: 3px 0;
+  }
+  .code-block .cm { color: var(--muted); }
+
+  .note {
+    color: var(--muted);
+    font-size: 10px;
+    font-style: italic;
+    padding: 2px 0 2px 8px;
+    border-left: 2px solid var(--border);
+    margin-top: 3px;
+  }
+  .note::before { content: "★ "; color: var(--yellow); }
+
+  ul.bp { list-style: none; padding-left: 2px; }
+  ul.bp li { color: var(--text); font-size: 11px; line-height: 1.55; }
+  ul.bp li::before { content: "• "; color: var(--green); }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 10px;
+    padding: 10px 16px 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  @media print {
+    .topbar, header .print-btn { display: none; }
+    header { position: static; }
+    body { font-size: 9px; }
+    .masonry { padding: 6px 10px; column-gap: 10px; }
+    h3 { font-size: 9px; }
+    .cmd, .flag, .slash, .desc, .code-block { font-size: 8.5px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar"></div>
+
+<header>
+  <h1><span class="c">Claude Code</span>&nbsp;&nbsp;CHEATSHEET</h1>
+  <span class="url">code.claude.com/docs/en/overview</span>
+  <button class="print-btn" onclick="window.print()">🖨 Imprimir / Guardar PDF</button>
+</header>
+
+<div class="masonry">
+
+  <!-- ══════════════════════════════════ -->
+  <!-- INSTALACIÓN                        -->
+  <!-- ══════════════════════════════════ -->
+  <div class="card">
+    <div class="sec sec-red">▌ INSTALACIÓN</div>
+    <div class="code-block">npm install -g @anthropic-ai/claude-code<br>cd &lt;proyecto&gt; &amp;&amp; claude<br>claude update</div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SLASH COMMANDS                     -->
+  <!-- ══════════════════════════════════ -->
+  <div class="card">
+    <div class="sec sec-purple">▌ SLASH COMMANDS</div>
+    <div class="muted">Escribe <span style="color:var(--purple);font-family:monospace">/</span> para filtrar. Algunos dependen del plan o plataforma.</div>
+
+    <h3>Sesión y contexto</h3>
+    <table>
+      <tr><td class="slash">/clear</td><td class="desc">Limpiar historial y liberar contexto <span class="muted">(alias: /reset, /new)</span></td></tr>
+      <tr><td class="slash">/compact [hint]</td><td class="desc">Compactar conversación con foco personalizado</td></tr>
+      <tr><td class="slash">/context</td><td class="desc">Visualizar uso del contexto (grid coloreado)</td></tr>
+      <tr><td class="slash">/cost</td><td class="desc">Ver estadísticas de tokens y coste</td></tr>
+      <tr><td class="slash">/branch [nombre]</td><td class="desc">Bifurcar conversación <span class="muted">(alias: /fork)</span></td></tr>
+      <tr><td class="slash">/rewind</td><td class="desc">Rebobinar a checkpoint anterior <span class="muted">(alias: /checkpoint)</span></td></tr>
+      <tr><td class="slash">/rename [nombre]</td><td class="desc">Renombrar sesión (auto-genera si vacío)</td></tr>
+      <tr><td class="slash">/resume [sesión]</td><td class="desc">Reanudar por ID/nombre <span class="muted">(alias: /continue)</span></td></tr>
+      <tr><td class="slash">/export [archivo]</td><td class="desc">Exportar conversación como texto plano</td></tr>
+      <tr><td class="slash">/desktop</td><td class="desc">Continuar en app Desktop macOS/Win <span class="muted">(alias: /app)</span></td></tr>
+    </table>
+
+    <h3>Configuración</h3>
+    <table>
+      <tr><td class="slash">/config</td><td class="desc">Abrir configuración <span class="muted">(alias: /settings)</span></td></tr>
+      <tr><td class="slash">/model [modelo]</td><td class="desc">Cambiar modelo (← → ajusta esfuerzo)</td></tr>
+      <tr><td class="slash">/effort [low|high|max]</td><td class="desc">Ajustar nivel de esfuerzo</td></tr>
+      <tr><td class="slash">/theme</td><td class="desc">Cambiar tema (dark, light, daltonized, ANSI)</td></tr>
+      <tr><td class="slash">/vim</td><td class="desc">Alternar modo Vim / Normal</td></tr>
+      <tr><td class="slash">/permissions</td><td class="desc">Ver/actualizar permisos <span class="muted">(alias: /allowed-tools)</span></td></tr>
+      <tr><td class="slash">/plan</td><td class="desc">Entrar en modo planificación</td></tr>
+      <tr><td class="slash">/fast [on|off]</td><td class="desc">Activar/desactivar fast mode</td></tr>
+      <tr><td class="slash">/color [color|default]</td><td class="desc">Color del prompt bar (red, blue, green...)</td></tr>
+      <tr><td class="slash">/keybindings</td><td class="desc">Abrir/crear archivo de atajos de teclado</td></tr>
+      <tr><td class="slash">/terminal-setup</td><td class="desc">Configurar atajos de terminal</td></tr>
+      <tr><td class="slash">/statusline</td><td class="desc">Configurar status line del shell</td></tr>
+    </table>
+
+    <h3>Memoria y archivos</h3>
+    <table>
+      <tr><td class="slash">/init</td><td class="desc">Generar CLAUDE.md del proyecto</td></tr>
+      <tr><td class="slash">/memory</td><td class="desc">Ver y editar CLAUDE.md y auto-memory</td></tr>
+      <tr><td class="slash">/add-dir &lt;path&gt;</td><td class="desc">Añadir directorio de trabajo a la sesión</td></tr>
+      <tr><td class="slash">/skills</td><td class="desc">Listar skills disponibles</td></tr>
+      <tr><td class="slash">/agents</td><td class="desc">Gestionar configuraciones de agentes</td></tr>
+    </table>
+
+    <h3>Código y revisión</h3>
+    <table>
+      <tr><td class="slash">/diff</td><td class="desc">Visor de diferencias interactivo (git diff + turnos)</td></tr>
+      <tr><td class="slash">/security-review</td><td class="desc">Analizar cambios por vulnerabilidades</td></tr>
+      <tr><td class="slash">/pr-comments [PR]</td><td class="desc">Ver comentarios de PR de GitHub (requiere gh)</td></tr>
+      <tr><td class="slash">/btw &lt;pregunta&gt;</td><td class="desc">Pregunta rápida sin añadir al contexto</td></tr>
+      <tr><td class="slash">/copy [N]</td><td class="desc">Copiar última(s) respuesta(s) al portapapeles</td></tr>
+      <tr><td class="slash">/schedule [desc]</td><td class="desc">Crear/listar/ejecutar tareas programadas cloud</td></tr>
+      <tr><td class="slash">/tasks</td><td class="desc">Listar y gestionar tareas en segundo plano</td></tr>
+      <tr><td class="slash">/sandbox</td><td class="desc">Activar/desactivar modo sandbox</td></tr>
+    </table>
+
+    <h3>Diagnóstico e información</h3>
+    <table>
+      <tr><td class="slash">/status</td><td class="desc">Estado: versión, modelo, cuenta, conectividad</td></tr>
+      <tr><td class="slash">/stats</td><td class="desc">Uso diario, historial, rachas, modelos</td></tr>
+      <tr><td class="slash">/doctor</td><td class="desc">Diagnosticar instalación de Claude Code</td></tr>
+      <tr><td class="slash">/insights</td><td class="desc">Informe de patrones de sesiones</td></tr>
+      <tr><td class="slash">/usage</td><td class="desc">Límites del plan y estado de rate limits</td></tr>
+      <tr><td class="slash">/release-notes</td><td class="desc">Ver changelog completo</td></tr>
+      <tr><td class="slash">/feedback</td><td class="desc">Enviar feedback <span class="muted">(alias: /bug)</span></td></tr>
+      <tr><td class="slash">/help</td><td class="desc">Mostrar ayuda y comandos disponibles</td></tr>
+      <tr><td class="slash">/exit</td><td class="desc">Salir del CLI <span class="muted">(alias: /quit)</span></td></tr>
+    </table>
+
+    <h3>Integraciones y conectividad</h3>
+    <table>
+      <tr><td class="slash">/install-github-app</td><td class="desc">Configurar Claude en GitHub Actions</td></tr>
+      <tr><td class="slash">/install-slack-app</td><td class="desc">Instalar app de Claude en Slack</td></tr>
+      <tr><td class="slash">/remote-control</td><td class="desc">Habilitar control remoto <span class="muted">(alias: /rc)</span></td></tr>
+      <tr><td class="slash">/remote-env</td><td class="desc">Configurar entorno remoto para --remote</td></tr>
+      <tr><td class="slash">/mcp</td><td class="desc">Gestionar conexiones MCP y OAuth</td></tr>
+      <tr><td class="slash">/chrome</td><td class="desc">Configurar integración Claude in Chrome</td></tr>
+      <tr><td class="slash">/ide</td><td class="desc">Gestionar integraciones IDE y ver estado</td></tr>
+      <tr><td class="slash">/plugin</td><td class="desc">Gestionar plugins de Claude Code</td></tr>
+      <tr><td class="slash">/reload-plugins</td><td class="desc">Recargar plugins sin reiniciar</td></tr>
+      <tr><td class="slash">/mobile</td><td class="desc">QR para app móvil <span class="muted">(alias: /ios, /android)</span></td></tr>
+      <tr><td class="slash">/voice</td><td class="desc">Activar dictado por voz push-to-talk</td></tr>
+    </table>
+    <div class="note">Prompts MCP: /mcp__&lt;servidor&gt;__&lt;prompt&gt;  (dinámicos desde servidores MCP conectados)</div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- COMANDOS CLI                       -->
+  <!-- ══════════════════════════════════ -->
+  <div class="card">
+    <div class="sec sec-red">▌ COMANDOS CLI</div>
+
+    <h3>Sesión e inicio</h3>
+    <table>
+      <tr><td class="cmd">claude</td><td class="desc">Sesión interactiva</td></tr>
+      <tr><td class="cmd">claude "query"</td><td class="desc">Sesión con prompt inicial</td></tr>
+      <tr><td class="cmd">claude -p "query"</td><td class="desc">Modo print / SDK (no interactivo)</td></tr>
+      <tr><td class="cmd">claude -c</td><td class="desc">Continuar última conversación</td></tr>
+      <tr><td class="cmd">claude -r "id" "query"</td><td class="desc">Reanudar sesión por nombre/ID</td></tr>
+      <tr><td class="cmd">claude -n "nombre"</td><td class="desc">Nueva sesión con nombre</td></tr>
+      <tr><td class="cmd">cat archivo | claude -p</td><td class="desc">Pipe de contenido al modelo</td></tr>
+      <tr><td class="cmd">claude --init</td><td class="desc">Init proyecto + CLAUDE.md interactivo</td></tr>
+      <tr><td class="cmd">claude --remote "tarea"</td><td class="desc">Crear sesión web en claude.ai</td></tr>
+      <tr><td class="cmd">claude --rc</td><td class="desc">Sesión con control remoto habilitado</td></tr>
+      <tr><td class="cmd">claude --chrome</td><td class="desc">Habilitar integración Chrome</td></tr>
+      <tr><td class="cmd">claude -w nombre</td><td class="desc">Sesión en git worktree aislado</td></tr>
+      <tr><td class="cmd">claude --teleport</td><td class="desc">Traer sesión web al terminal local</td></tr>
+      <tr><td class="cmd">claude --from-pr 123</td><td class="desc">Reanudar sesiones de un PR de GitHub</td></tr>
+    </table>
+
+    <h3>Autenticación y gestión</h3>
+    <table>
+      <tr><td class="cmd">claude auth login</td><td class="desc">Iniciar sesión (--console para API key)</td></tr>
+      <tr><td class="cmd">claude auth logout</td><td class="desc">Cerrar sesión</td></tr>
+      <tr><td class="cmd">claude auth status</td><td class="desc">Estado de autenticación como JSON</td></tr>
+      <tr><td class="cmd">claude --version</td><td class="desc">Ver versión instalada</td></tr>
+      <tr><td class="cmd">claude agents</td><td class="desc">Listar subagents configurados</td></tr>
+      <tr><td class="cmd">claude mcp</td><td class="desc">Configurar servidores MCP</td></tr>
+      <tr><td class="cmd">claude remote-control</td><td class="desc">Iniciar servidor de control remoto</td></tr>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- MEMORIA (CLAUDE.md)                -->
+  <!-- ══════════════════════════════════ -->
+  <div class="card">
+    <div class="sec sec-blue">▌ MEMORIA (CLAUDE.md)</div>
+
+    <h3>Jerarquía de ubicaciones</h3>
+    <table>
+      <tr><td class="cmd">./CLAUDE.md</td><td class="desc">Instrucciones del proyecto actual</td></tr>
+      <tr><td class="cmd">./.claude/CLAUDE.md</td><td class="desc">Alternativa del proyecto</td></tr>
+      <tr><td class="cmd">~/.claude/CLAUDE.md</td><td class="desc">Preferencias personales globales</td></tr>
+      <tr><td class="cmd">/etc/claude-code/CLAUDE.md</td><td class="desc">Política de organización (admin)</td></tr>
+    </table>
+
+    <h3>Importar archivos en CLAUDE.md</h3>
+    <table>
+      <tr><td class="cmd">@README</td><td class="desc">Importa el README del proyecto</td></tr>
+      <tr><td class="cmd">@package.json</td><td class="desc">Importa package.json</td></tr>
+      <tr><td class="cmd">@docs/guia.md</td><td class="desc">Importa archivo específico</td></tr>
+      <tr><td class="cmd">@~/.claude/prefs.md</td><td class="desc">Importa preferencias personales</td></tr>
+    </table>
+
+    <h3>Reglas por ruta (frontmatter YAML)</h3>
+    <div class="code-block">---<br>paths:<br>&nbsp;&nbsp;- "src/api/**/*.ts"<br>&nbsp;&nbsp;- "src/**/*.{ts,tsx}"<br>---<br><span class="cm"># Reglas bajo este frontmatter solo aplican a esos paths</span></div>
+
+    <h3>Buenas prácticas</h3>
+    <ul class="bp">
+      <li>Máx. ~200 líneas por archivo (mejor adherencia del modelo)</li>
+      <li>Usar headers y bullets para estructurar</li>
+      <li>Instrucciones específicas y verificables</li>
+      <li>Evitar contradicciones entre archivos</li>
+      <li>Usa /init con <code style="color:var(--green)">CLAUDE_CODE_NEW_INIT=true</code> para flujo interactivo completo</li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- FLAGS CLI                          -->
+  <!-- ══════════════════════════════════ -->
+  <div class="card">
+    <div class="sec sec-yellow">▌ FLAGS CLI</div>
+
+    <h3>Modelo y esfuerzo</h3>
+    <table>
+      <tr><td class="flag">--model sonnet|opus</td><td class="desc">Alias o nombre completo del modelo</td></tr>
+      <tr><td class="flag">--effort low|medium|high|max</td><td class="desc">Nivel de esfuerzo (max = Opus 4.6)</td></tr>
+      <tr><td class="flag">--fallback-model sonnet</td><td class="desc">Fallback si modelo sobrecargado (-p)</td></tr>
+      <tr><td class="flag">--betas interleaved-thinking</td><td class="desc">Betas de API (solo API key)</td></tr>
+    </table>
+
+    <h3>Control de ejecución</h3>
+    <table>
+      <tr><td class="flag">--permission-mode plan</td><td class="desc">Solo planificar, sin ejecutar</td></tr>
+      <tr><td class="flag">--max-turns N</td><td class="desc">Limitar turnos del agente (modo -p)</td></tr>
+      <tr><td class="flag">--max-budget-usd 5.00</td><td class="desc">Límite de gasto en USD (modo -p)</td></tr>
+      <tr><td class="flag">--dangerously-skip-permissions</td><td class="desc">Omitir confirmaciones (⚠ cuidado)</td></tr>
+      <tr><td class="flag">--tools "Bash,Edit,Read"</td><td class="desc">Restringir herramientas disponibles</td></tr>
+      <tr><td class="flag">--disallowedTools "Edit"</td><td class="desc">Eliminar herramientas del contexto</td></tr>
+      <tr><td class="flag">--allowedTools "Bash(git*)"</td><td class="desc">Auto-aprobar herramientas específicas</td></tr>
+      <tr><td class="flag">--disable-slash-commands</td><td class="desc">Deshabilitar todos los skills</td></tr>
+      <tr><td class="flag">--bare</td><td class="desc">Modo mínimo sin hooks/MCP/memoria</td></tr>
+      <tr><td class="flag">--no-session-persistence</td><td class="desc">Sesión efímera sin guardar (-p)</td></tr>
+    </table>
+
+    <h3>System Prompt</h3>
+    <table>
+      <tr><td class="flag">--system-prompt "..."</td><td class="desc">Reemplazar system prompt completo</td></tr>
+      <tr><td class="flag">--system-prompt-file file.txt</td><td class="desc">Reemplazar prompt desde archivo</td></tr>
+      <tr><td class="flag">--append-system-prompt "..."</td><td class="desc">Añadir al system prompt <strong style="color:var(--green)">(recomendado)</strong></td></tr>
+      <tr><td class="flag">--append-system-prompt-file f</td><td class="desc">Añadir desde archivo al prompt</td></tr>
+    </table>
+    <div class="muted" style="padding-left:4px;margin-top:2px">--system-prompt y --system-prompt-file son mutuamente exclusivos</div>
+
+    <h3>Sesiones y salida</h3>
+    <table>
+      <tr><td class="flag">--output-format json|text|stream-json</td><td class="desc">Formato de salida (con -p)</td></tr>
+      <tr><td class="flag">--input-format text|stream-json</td><td class="desc">Formato de entrada (con -p)</td></tr>
+      <tr><td class="flag">--json-schema '{...}'</td><td class="desc">JSON Schema para output validado</td></tr>
+      <tr><td class="flag">--include-partial-messages</td><td class="desc">Incluir eventos de streaming parciales</td></tr>
+      <tr><td class="flag">--verbose</td><td class="desc">Logs detallados turno a turno</td></tr>
+      <tr><td class="flag">--debug "api,mcp"</td><td class="desc">Debug con filtros de categoría</td></tr>
+      <tr><td class="flag">--worktree / -w nombre</td><td class="desc">Iniciar en git worktree aislado</td></tr>
+      <tr><td class="flag">--fork-session</td><td class="desc">Fork al reanudar (nuevo ID)</td></tr>
+      <tr><td class="flag">--name / -n "nombre"</td><td class="desc">Asignar nombre a la sesión</td></tr>
+      <tr><td class="flag">--session-id "uuid"</td><td class="desc">Usar ID de sesión específico</td></tr>
+    </table>
+
+    <h3>Contexto, MCP e integraciones</h3>
+    <table>
+      <tr><td class="flag">--add-dir ../lib ../apps</td><td class="desc">Añadir directorios de trabajo</td></tr>
+      <tr><td class="flag">--settings ./settings.json</td><td class="desc">Cargar config adicional</td></tr>
+      <tr><td class="flag">--setting-sources user,project</td><td class="desc">Fuentes de settings a cargar</td></tr>
+      <tr><td class="flag">--mcp-config ./mcp.json</td><td class="desc">Cargar servidores MCP desde archivo</td></tr>
+      <tr><td class="flag">--strict-mcp-config</td><td class="desc">Solo usar MCP de --mcp-config</td></tr>
+      <tr><td class="flag">--agent nombre</td><td class="desc">Usar agente personalizado</td></tr>
+      <tr><td class="flag">--agents '{...}'</td><td class="desc">Definir subagents vía JSON dinámico</td></tr>
+      <tr><td class="flag">--plugin-dir ./plugins</td><td class="desc">Cargar plugins desde directorio</td></tr>
+      <tr><td class="flag">--teammate-mode auto|tmux</td><td class="desc">Modo display para agent teams</td></tr>
+      <tr><td class="flag">--ide</td><td class="desc">Conectar automáticamente al IDE</td></tr>
+      <tr><td class="flag">--chrome / --no-chrome</td><td class="desc">Habilitar/deshabilitar Chrome</td></tr>
+      <tr><td class="flag">--remote-control / --rc</td><td class="desc">Control remoto interactivo</td></tr>
+      <tr><td class="flag">--init / --init-only</td><td class="desc">Ejecutar hooks de inicialización</td></tr>
+      <tr><td class="flag">--maintenance</td><td class="desc">Ejecutar hooks de mantenimiento</td></tr>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- AUTO MEMORY                        -->
+  <!-- ══════════════════════════════════ -->
+  <div class="card">
+    <div class="sec sec-blue">▌ AUTO MEMORY</div>
+
+    <h3>Ubicación y gestión</h3>
+    <table>
+      <tr><td class="cmd">~/.claude/projects/&lt;proj&gt;/memory/</td><td class="desc">Directorio de auto-memory</td></tr>
+      <tr><td class="cmd">&nbsp;&nbsp;MEMORY.md</td><td class="desc">Índice (carga primeras 200 líneas)</td></tr>
+      <tr><td class="cmd">&nbsp;&nbsp;debugging.md</td><td class="desc">Notas de depuración automáticas</td></tr>
+      <tr><td class="cmd">&nbsp;&nbsp;api-conventions.md</td><td class="desc">Decisiones de diseño guardadas</td></tr>
+    </table>
+
+    <h3>Deshabilitar auto-memory</h3>
+    <div class="code-block">{"autoMemoryEnabled": false} &nbsp;<span class="cm">→ settings.json</span><br>CLAUDE_CODE_DISABLE_AUTO_MEMORY=1 &nbsp;<span class="cm">→ env var</span></div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- FLUJOS DE TRABAJO                  -->
+  <!-- ══════════════════════════════════ -->
+  <div class="card">
+    <div class="sec sec-green">▌ FLUJOS DE TRABAJO</div>
+
+    <h3>Inicio de proyecto</h3>
+    <table>
+      <tr><td class="cmd">claude --init</td><td class="desc">Init interactivo (CLAUDE.md, hooks, skills)</td></tr>
+      <tr><td class="cmd">claude -w feature-auth</td><td class="desc">Sesión paralela en worktree aislado</td></tr>
+      <tr><td class="cmd">claude --permission-mode plan</td><td class="desc">Solo planificar, sin ejecutar código</td></tr>
+      <tr><td class="cmd">claude -n "auth-refactor"</td><td class="desc">Sesión nombrada para retomar luego</td></tr>
+    </table>
+
+    <h3>Pipelines no interactivos (modo -p)</h3>
+    <div class="code-block">claude -p --max-turns 5 --output-format json "query"<br>cat error.log | claude -p "explica y corrige"<br>claude -p --json-schema '{...}' "genera objeto validado"<br>claude -p --max-budget-usd 2 --fallback-model sonnet "q"<br>claude --bare -p "query" &nbsp;<span class="cm"># arranque mínimo y rápido</span></div>
+
+    <h3>Gestión de contexto</h3>
+    <table>
+      <tr><td class="slash">/compact "enfócate en módulo auth"</td><td class="desc">Compactar con foco</td></tr>
+      <tr><td class="slash">/clear</td><td class="desc">Cuando el contexto está saturado</td></tr>
+      <tr><td class="slash">/rewind</td><td class="desc">Volver a punto anterior del código</td></tr>
+      <tr><td class="slash">/context</td><td class="desc">Visualizar uso del contexto</td></tr>
+      <tr><td class="slash">/fork mi-rama</td><td class="desc">Explorar alternativa sin perder historial</td></tr>
+    </table>
+
+    <h3>Modelos y esfuerzo</h3>
+    <table>
+      <tr><td class="cmd">claude --model claude-opus-4-6 --effort max</td><td class="desc">Máximo poder</td></tr>
+      <tr><td class="cmd">claude --model sonnet --effort low</td><td class="desc">Tareas simples y económicas</td></tr>
+      <tr><td class="cmd">claude --effort high</td><td class="desc">Balance calidad/velocidad</td></tr>
+      <tr><td class="slash">/effort auto</td><td class="desc">Reset al esfuerzo por defecto</td></tr>
+    </table>
+
+    <h3>Debug y diagnóstico</h3>
+    <table>
+      <tr><td class="cmd">claude --debug "api,mcp"</td><td class="desc">Debug de API y MCP específico</td></tr>
+      <tr><td class="cmd">claude --debug "!statsig"</td><td class="desc">Debug excluyendo categoría</td></tr>
+      <tr><td class="slash">/doctor</td><td class="desc">Verificar instalación completa</td></tr>
+      <tr><td class="slash">/security-review</td><td class="desc">Revisar vulnerabilidades en cambios</td></tr>
+      <tr><td class="slash">/status</td><td class="desc">Estado: versión, modelo, cuenta</td></tr>
+      <tr><td class="slash">/stats</td><td class="desc">Uso y estadísticas de sesiones</td></tr>
+    </table>
+
+    <h3>Integraciones avanzadas</h3>
+    <table>
+      <tr><td class="cmd">claude --chrome</td><td class="desc">Depurar app web en vivo con Chrome</td></tr>
+      <tr><td class="cmd">claude --rc</td><td class="desc">Controlar desde móvil / claude.ai</td></tr>
+      <tr><td class="cmd">claude --remote "Fix bug"</td><td class="desc">Crear sesión web en claude.ai</td></tr>
+      <tr><td class="cmd">claude --teleport</td><td class="desc">Traer sesión web al terminal local</td></tr>
+      <tr><td class="slash">/install-github-app</td><td class="desc">Configurar en GitHub Actions</td></tr>
+      <tr><td class="cmd">claude --from-pr 123</td><td class="desc">Retomar sesiones de un PR</td></tr>
+      <tr><td class="slash">/mcp</td><td class="desc">Gestionar servidores MCP</td></tr>
+      <tr><td class="slash">/schedule</td><td class="desc">Crear tareas programadas en cloud</td></tr>
+    </table>
+
+    <div class="note">Agent Teams: claude --teammate-mode tmux → sesiones paralelas coordinadas</div>
+    <div class="note">Worktrees: cambios aislados de main, limpieza automática si no hay cambios</div>
+    <div class="note">--bare omite hooks, skills, MCP, auto-memory y CLAUDE.md → arranque rápido</div>
+    <div class="note">Esfuerzo 'max' solo disponible en Opus 4.6, persiste solo en la sesión actual</div>
+  </div>
+
+</div><!-- /masonry -->
+
+<footer>
+  Claude Code Cheatsheet &nbsp;•&nbsp;
+  <a href="https://code.claude.com/docs/en/overview" style="color:var(--blue)">code.claude.com/docs/en/overview</a>
+  &nbsp;•&nbsp; Usa "🖨 Imprimir / Guardar PDF" para exportar
+</footer>
+
+</body>
+</html>
