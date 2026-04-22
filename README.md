@@ -91,6 +91,26 @@ cp agents/test-engineer.md ~/.claude/agents/
 
 ---
 
+### `plan-refiner`
+
+> Planning and instruction-refinement specialist that turns rough requests into executable briefs.
+
+**When to use it:** When a request is broad, ambiguous, high-risk, multi-step, or when you want help expressing a better prompt before implementation. It complements `/plan`: `/plan` keeps Claude in read-only planning mode, while this agent improves the user's instructions, assumptions, acceptance criteria, and handoff prompt.
+
+**Model:** `sonnet` - **Color:** purple
+
+**Example prompts:**
+- *"Help me ask this better: make the dashboard faster."*
+- *"Before touching code, help me plan how to add SSO."*
+- *"Refactor the payments module to be cleaner, but first turn that into a concrete plan."*
+
+**Install:**
+```bash
+cp agents/plan-refiner.md ~/.claude/agents/
+```
+
+---
+
 ### `repo-cartographer`
 
 > Repository cartographer for onboarding, architecture mapping, and code path discovery.
@@ -133,6 +153,7 @@ claude-code-agents/
 +-- agents/
 |   +-- claude-code-expert.md
 |   +-- code-reviewer.md
+|   +-- plan-refiner.md
 |   +-- repo-cartographer.md
 |   +-- test-engineer.md
 +-- claude-code-cheatsheet.html
