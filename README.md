@@ -131,6 +131,27 @@ cp agents/repo-cartographer.md ~/.claude/agents/
 
 ---
 
+### `logical-core-refactor`
+
+> Large-file modularization specialist that splits monolithic files into focused logical modules while keeping the original file as the public API facade.
+
+**When to use it:** When a file is too large to work with comfortably (>2000 lines, context saturation, mixed responsibilities) and you want it split into organized modules without breaking any existing imports or changing behavior. The original file becomes a thin facade that delegates to the new modules — external call sites require zero changes.
+
+**Model:** `sonnet` - **Color:** cyan
+
+**Example prompts:**
+- *"This services/user.ts is way too big. Split it into logical modules but don't break anything."*
+- *"Claude keeps losing context with utils/api.py — it's 4000 lines. Break it up."*
+- *"Our controllers/main.go mixes handlers, validators, and DB logic. Organize it."*
+- *"Split this file into modules but don't touch how anything is called externally."*
+
+**Install:**
+```bash
+cp agents/logical-core-refactor.md ~/.claude/agents/
+```
+
+---
+
 ## Cheatsheet
 
 The [`claude-code-cheatsheet.html`](./claude-code-cheatsheet.html) file is a complete visual reference for Claude Code including:
@@ -153,6 +174,7 @@ claude-code-agents/
 +-- agents/
 |   +-- claude-code-expert.md
 |   +-- code-reviewer.md
+|   +-- logical-core-refactor.md
 |   +-- plan-refiner.md
 |   +-- repo-cartographer.md
 |   +-- test-engineer.md
