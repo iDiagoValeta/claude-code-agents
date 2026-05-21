@@ -36,6 +36,22 @@ Before adding or changing agents, follow [`docs/agent-authoring-guide.md`](./doc
 
 ## Available agents
 
+| Agent | Purpose |
+|---|---|
+| [`ci-cd-maintainer`](./agents/ci-cd-maintainer.md) | Diagnose and repair existing CI/CD workflows, runner issues, secrets, caches, artifacts, deployment jobs, and release automation failures. |
+| [`ci-cd-pipeline-builder`](./agents/ci-cd-pipeline-builder.md) | Create or extend CI/CD workflows, build pipelines, release automation, deployment gates, artifact publishing, and repository automation. |
+| [`claude-code-expert`](./agents/claude-code-expert.md) | Answer questions about Claude Code itself: installation, commands, configuration, memory, hooks, MCP, subagents, workflows, and troubleshooting. |
+| [`code-reviewer`](./agents/code-reviewer.md) | Review code, PRs, diffs, commits, and risky changes for defects, regressions, missing tests, and merge risk. |
+| [`logical-core-refactor`](./agents/logical-core-refactor.md) | Split very large files into logical modules while preserving the original public API surface as a facade. |
+| [`plan-refiner`](./agents/plan-refiner.md) | Turn broad, ambiguous, high-risk, or underspecified requests into executable briefs, assumptions, acceptance criteria, and handoff prompts. |
+| [`repo-cartographer`](./agents/repo-cartographer.md) | Map unfamiliar repositories, feature flows, module boundaries, dependency paths, and safe insertion points. |
+| [`test-engineer`](./agents/test-engineer.md) | Design, write, fix, or improve tests, test strategy, fixtures, mocks, regression coverage, flaky tests, and CI test failures. |
+| [`typescript-documenter`](./agents/typescript-documenter.md) | Improve TypeScript JSDoc, module READMEs, public API documentation, explanatory comments, and type-driven documentation. |
+| [`typescript-feature-builder`](./agents/typescript-feature-builder.md) | Implement new TypeScript features with minimal scope, clear type contracts, safe dependency boundaries, and proportional verification. |
+| [`typescript-refactorer`](./agents/typescript-refactorer.md) | Refactor existing TypeScript for structure, readability, maintainability, and responsibility boundaries while preserving behavior. |
+
+---
+
 ### `claude-code-expert`
 
 > Expert on everything related to Claude Code, Anthropic's official agentic CLI.
@@ -93,6 +109,46 @@ cp agents/code-reviewer.md ~/.claude/agents/
 **Install:**
 ```bash
 cp agents/test-engineer.md ~/.claude/agents/
+```
+
+---
+
+### `ci-cd-pipeline-builder`
+
+> CI/CD pipeline creation specialist for repository automation, release workflows, and deployment gates.
+
+**When to use it:** When you need to create or extend CI/CD workflows, build pipelines, release automation, deployment gates, artifact publishing, or repository automation from the project's real scripts and infrastructure constraints.
+
+**Model:** `sonnet` - **Color:** yellow
+
+**Example prompts:**
+- *"Add GitHub Actions CI for lint, typecheck, tests, and build."*
+- *"Create a release workflow that publishes Docker images on tags."*
+- *"Add a production deployment workflow with a manual approval gate."*
+
+**Install:**
+```bash
+cp agents/ci-cd-pipeline-builder.md ~/.claude/agents/
+```
+
+---
+
+### `ci-cd-maintainer`
+
+> CI/CD maintenance and repair specialist for failing pipelines, runner issues, and deployment automation.
+
+**When to use it:** When you need to debug failing pipelines, maintain existing workflows, update CI/CD configuration, fix runner or environment issues, improve pipeline reliability, or diagnose deployment automation failures.
+
+**Model:** `sonnet` - **Color:** red
+
+**Example prompts:**
+- *"Fix the GitHub Actions workflow that started failing after the Node upgrade."*
+- *"Diagnose why this deployment job cannot read the production secret."*
+- *"Make this flaky CI cache setup deterministic without skipping tests."*
+
+**Install:**
+```bash
+cp agents/ci-cd-maintainer.md ~/.claude/agents/
 ```
 
 ---
@@ -238,6 +294,8 @@ Open it in the browser or print/save as PDF using the built-in button.
 ```
 claude-code-agents/
 +-- agents/
+|   +-- ci-cd-maintainer.md
+|   +-- ci-cd-pipeline-builder.md
 |   +-- claude-code-expert.md
 |   +-- code-reviewer.md
 |   +-- logical-core-refactor.md
