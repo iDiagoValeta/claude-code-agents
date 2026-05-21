@@ -28,6 +28,12 @@ Then restart Claude Code or run `/agents` to verify it is available.
 
 ---
 
+## Agent authoring guide
+
+Before adding or changing agents, follow [`docs/agent-authoring-guide.md`](./docs/agent-authoring-guide.md). It documents the local format conventions and official Anthropic references for writing Claude Code subagents.
+
+---
+
 ## Available agents
 
 ### `claude-code-expert`
@@ -87,6 +93,66 @@ cp agents/code-reviewer.md ~/.claude/agents/
 **Install:**
 ```bash
 cp agents/test-engineer.md ~/.claude/agents/
+```
+
+---
+
+### `typescript-feature-builder`
+
+> TypeScript feature implementation specialist for startup codebases.
+
+**When to use it:** When you need to add a new TypeScript feature, workflow, endpoint, UI behavior, service, integration, or domain rule while keeping the change minimal, strongly typed, and safe.
+
+**Model:** `sonnet` - **Color:** cyan
+
+**Example prompts:**
+- *"Add support for gas invoices using the existing parser pattern."*
+- *"Implement the new billing status flow without overbuilding future states."*
+- *"Add this provider behind the existing AI client abstraction."*
+
+**Install:**
+```bash
+cp agents/typescript-feature-builder.md ~/.claude/agents/
+```
+
+---
+
+### `typescript-refactorer`
+
+> TypeScript refactoring specialist focused on behavior preservation and incremental cleanup.
+
+**When to use it:** When you need to improve existing TypeScript structure, readability, maintainability, dependency boundaries, or duplication while preserving current behavior with tests or characterization coverage.
+
+**Model:** `sonnet` - **Color:** orange
+
+**Example prompts:**
+- *"Refactor this checkout service without changing behavior."*
+- *"Split this large TypeScript handler into clearer responsibilities."*
+- *"Remove the duplicated validation logic, but add characterization tests first."*
+
+**Install:**
+```bash
+cp agents/typescript-refactorer.md ~/.claude/agents/
+```
+
+---
+
+### `typescript-documenter`
+
+> TypeScript documentation specialist for useful JSDoc, module READMEs, and why-oriented comments.
+
+**When to use it:** When you need to document exported APIs, module responsibilities, operational constraints, non-obvious business rules, or type-driven contracts in a TypeScript codebase.
+
+**Model:** `sonnet` - **Color:** pink
+
+**Example prompts:**
+- *"Add JSDoc to the public billing calculation utilities."*
+- *"Create a README for this API module based on the actual code."*
+- *"Replace these noisy comments with useful why-oriented documentation."*
+
+**Install:**
+```bash
+cp agents/typescript-documenter.md ~/.claude/agents/
 ```
 
 ---
@@ -178,6 +244,11 @@ claude-code-agents/
 |   +-- plan-refiner.md
 |   +-- repo-cartographer.md
 |   +-- test-engineer.md
+|   +-- typescript-documenter.md
+|   +-- typescript-feature-builder.md
+|   +-- typescript-refactorer.md
++-- docs/
+|   +-- agent-authoring-guide.md
 +-- claude-code-cheatsheet.html
 +-- README.md
 ```
