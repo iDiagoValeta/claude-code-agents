@@ -6,7 +6,11 @@ A collection of personal agents for [Claude Code](https://claude.ai/code), Anthr
 
 ## What is this?
 
-This repository contains custom subagents ready to use with Claude Code. Each agent has a specific purpose and is optimized to respond accurately within its domain.
+This repository is a library of ready-to-use building blocks for Claude Code:
+
+- **Agents** — custom subagents, each focused on a specific domain.
+- **Skills** — reusable workflows that run in your main conversation.
+- **Hooks** — deterministic automation that runs on Claude Code events.
 
 It also includes an **interactive cheatsheet** covering Claude Code commands, flags, and shortcuts.
 
@@ -28,27 +32,37 @@ Then restart Claude Code or run `/agents` to verify it is available.
 
 ---
 
-## Agent authoring guide
+## Authoring guides
 
-Before adding or changing agents, follow [`docs/agent-authoring-guide.md`](./docs/agent-authoring-guide.md). It documents the local format conventions and official Anthropic references for writing Claude Code subagents.
+Before adding or changing an element, follow the guide for its type:
+
+- Agents — [`docs/agent-authoring-guide.md`](./docs/agent-authoring-guide.md)
+- Skills — [`docs/skill-authoring-guide.md`](./docs/skill-authoring-guide.md)
+- Hooks — [`docs/hook-authoring-guide.md`](./docs/hook-authoring-guide.md)
+
+They document the local format conventions and the official Anthropic references.
 
 ---
 
 ## Available agents
 
-| Agent | Purpose |
-|---|---|
-| [`ci-cd-maintainer`](./agents/ci-cd-maintainer.md) | Diagnose and repair existing CI/CD workflows, runner issues, secrets, caches, artifacts, deployment jobs, and release automation failures. |
-| [`ci-cd-pipeline-builder`](./agents/ci-cd-pipeline-builder.md) | Create or extend CI/CD workflows, build pipelines, release automation, deployment gates, artifact publishing, and repository automation. |
-| [`claude-code-expert`](./agents/claude-code-expert.md) | Answer questions about Claude Code itself: installation, commands, configuration, memory, hooks, MCP, subagents, workflows, and troubleshooting. |
-| [`code-reviewer`](./agents/code-reviewer.md) | Review code, PRs, diffs, commits, and risky changes for defects, regressions, missing tests, and merge risk. |
-| [`logical-core-refactor`](./agents/logical-core-refactor.md) | Split very large files into logical modules while preserving the original public API surface as a facade. |
-| [`plan-refiner`](./agents/plan-refiner.md) | Turn broad, ambiguous, high-risk, or underspecified requests into executable briefs, assumptions, acceptance criteria, and handoff prompts. |
-| [`repo-cartographer`](./agents/repo-cartographer.md) | Map unfamiliar repositories, feature flows, module boundaries, dependency paths, and safe insertion points. |
-| [`test-engineer`](./agents/test-engineer.md) | Design, write, fix, or improve tests, test strategy, fixtures, mocks, regression coverage, flaky tests, and CI test failures. |
-| [`typescript-documenter`](./agents/typescript-documenter.md) | Improve TypeScript JSDoc, module READMEs, public API documentation, explanatory comments, and type-driven documentation. |
-| [`typescript-feature-builder`](./agents/typescript-feature-builder.md) | Implement new TypeScript features with minimal scope, clear type contracts, safe dependency boundaries, and proportional verification. |
-| [`typescript-refactorer`](./agents/typescript-refactorer.md) | Refactor existing TypeScript for structure, readability, maintainability, and responsibility boundaries while preserving behavior. |
+| Agent                                                                  | Purpose                                                                                                                                           |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`ci-cd-maintainer`](./agents/ci-cd-maintainer.md)                     | Diagnose and repair existing CI/CD workflows, runner issues, secrets, caches, artifacts, deployment jobs, and release automation failures.        |
+| [`ci-cd-pipeline-builder`](./agents/ci-cd-pipeline-builder.md)         | Create or extend CI/CD workflows, build pipelines, release automation, deployment gates, artifact publishing, and repository automation.          |
+| [`claude-code-expert`](./agents/claude-code-expert.md)                 | Answer questions about Claude Code itself: installation, commands, configuration, memory, hooks, MCP, subagents, workflows, and troubleshooting.  |
+| [`code-reviewer`](./agents/code-reviewer.md)                           | Review code, PRs, diffs, commits, and risky changes for defects, regressions, missing tests, and merge risk.                                      |
+| [`commit-and-pr-author`](./agents/commit-and-pr-author.md)             | Draft clean commit messages, logical commit splits, and reviewer-focused PR descriptions from the actual diff and history.                        |
+| [`dependency-upgrader`](./agents/dependency-upgrader.md)               | Update dependencies, resolve breaking changes, remediate vulnerabilities, and keep lockfiles deterministic, verified by the project's own checks. |
+| [`logical-core-refactor`](./agents/logical-core-refactor.md)           | Split very large files into logical modules while preserving the original public API surface as a facade.                                         |
+| [`plan-refiner`](./agents/plan-refiner.md)                             | Turn broad, ambiguous, high-risk, or underspecified requests into executable briefs, assumptions, acceptance criteria, and handoff prompts.       |
+| [`repo-cartographer`](./agents/repo-cartographer.md)                   | Map unfamiliar repositories, feature flows, module boundaries, dependency paths, and safe insertion points.                                       |
+| [`root-cause-debugger`](./agents/root-cause-debugger.md)               | Reproduce, isolate, and find the root cause of a bug, then apply the minimal verified fix. Language-agnostic.                                     |
+| [`security-auditor`](./agents/security-auditor.md)                     | Proactively audit a whole codebase for secrets, broken authz, injection, and OWASP-class risks, with exploit paths and remediation.               |
+| [`test-engineer`](./agents/test-engineer.md)                           | Design, write, fix, or improve tests, test strategy, fixtures, mocks, regression coverage, flaky tests, and CI test failures.                     |
+| [`typescript-documenter`](./agents/typescript-documenter.md)           | Improve TypeScript JSDoc, module READMEs, public API documentation, explanatory comments, and type-driven documentation.                          |
+| [`typescript-feature-builder`](./agents/typescript-feature-builder.md) | Implement new TypeScript features with minimal scope, clear type contracts, safe dependency boundaries, and proportional verification.            |
+| [`typescript-refactorer`](./agents/typescript-refactorer.md)           | Refactor existing TypeScript for structure, readability, maintainability, and responsibility boundaries while preserving behavior.                |
 
 ---
 
@@ -61,12 +75,14 @@ Before adding or changing agents, follow [`docs/agent-authoring-guide.md`](./doc
 **Model:** `sonnet` - **Color:** yellow
 
 **Example prompts:**
-- *"How do I use Claude Code in a CI/CD pipeline without interactive prompts?"*
-- *"My CLAUDE.md instructions aren't being applied, why?"*
-- *"How do I automatically run ESLint every time Claude edits a file?"*
-- *"Can Claude work on two features at the same time?"*
+
+- _"How do I use Claude Code in a CI/CD pipeline without interactive prompts?"_
+- _"My CLAUDE.md instructions aren't being applied, why?"_
+- _"How do I automatically run ESLint every time Claude edits a file?"_
+- _"Can Claude work on two features at the same time?"_
 
 **Install:**
+
 ```bash
 cp agents/claude-code-expert.md ~/.claude/agents/
 ```
@@ -82,11 +98,13 @@ cp agents/claude-code-expert.md ~/.claude/agents/
 **Model:** `sonnet` - **Color:** red
 
 **Example prompts:**
-- *"Review my changes before I send this."*
-- *"Can you review PR #42?"*
-- *"I refactored the auth middleware. Look for anything dangerous."*
+
+- _"Review my changes before I send this."_
+- _"Can you review PR #42?"_
+- _"I refactored the auth middleware. Look for anything dangerous."_
 
 **Install:**
+
 ```bash
 cp agents/code-reviewer.md ~/.claude/agents/
 ```
@@ -102,11 +120,13 @@ cp agents/code-reviewer.md ~/.claude/agents/
 **Model:** `sonnet` - **Color:** green
 
 **Example prompts:**
-- *"Add tests for this new billing rule."*
-- *"This test is flaky in CI but passes locally."*
-- *"What tests should we add for the migration?"*
+
+- _"Add tests for this new billing rule."_
+- _"This test is flaky in CI but passes locally."_
+- _"What tests should we add for the migration?"_
 
 **Install:**
+
 ```bash
 cp agents/test-engineer.md ~/.claude/agents/
 ```
@@ -122,11 +142,13 @@ cp agents/test-engineer.md ~/.claude/agents/
 **Model:** `sonnet` - **Color:** yellow
 
 **Example prompts:**
-- *"Add GitHub Actions CI for lint, typecheck, tests, and build."*
-- *"Create a release workflow that publishes Docker images on tags."*
-- *"Add a production deployment workflow with a manual approval gate."*
+
+- _"Add GitHub Actions CI for lint, typecheck, tests, and build."_
+- _"Create a release workflow that publishes Docker images on tags."_
+- _"Add a production deployment workflow with a manual approval gate."_
 
 **Install:**
+
 ```bash
 cp agents/ci-cd-pipeline-builder.md ~/.claude/agents/
 ```
@@ -142,11 +164,13 @@ cp agents/ci-cd-pipeline-builder.md ~/.claude/agents/
 **Model:** `sonnet` - **Color:** red
 
 **Example prompts:**
-- *"Fix the GitHub Actions workflow that started failing after the Node upgrade."*
-- *"Diagnose why this deployment job cannot read the production secret."*
-- *"Make this flaky CI cache setup deterministic without skipping tests."*
+
+- _"Fix the GitHub Actions workflow that started failing after the Node upgrade."_
+- _"Diagnose why this deployment job cannot read the production secret."_
+- _"Make this flaky CI cache setup deterministic without skipping tests."_
 
 **Install:**
+
 ```bash
 cp agents/ci-cd-maintainer.md ~/.claude/agents/
 ```
@@ -162,11 +186,13 @@ cp agents/ci-cd-maintainer.md ~/.claude/agents/
 **Model:** `sonnet` - **Color:** cyan
 
 **Example prompts:**
-- *"Add support for gas invoices using the existing parser pattern."*
-- *"Implement the new billing status flow without overbuilding future states."*
-- *"Add this provider behind the existing AI client abstraction."*
+
+- _"Add support for gas invoices using the existing parser pattern."_
+- _"Implement the new billing status flow without overbuilding future states."_
+- _"Add this provider behind the existing AI client abstraction."_
 
 **Install:**
+
 ```bash
 cp agents/typescript-feature-builder.md ~/.claude/agents/
 ```
@@ -182,11 +208,13 @@ cp agents/typescript-feature-builder.md ~/.claude/agents/
 **Model:** `sonnet` - **Color:** orange
 
 **Example prompts:**
-- *"Refactor this checkout service without changing behavior."*
-- *"Split this large TypeScript handler into clearer responsibilities."*
-- *"Remove the duplicated validation logic, but add characterization tests first."*
+
+- _"Refactor this checkout service without changing behavior."_
+- _"Split this large TypeScript handler into clearer responsibilities."_
+- _"Remove the duplicated validation logic, but add characterization tests first."_
 
 **Install:**
+
 ```bash
 cp agents/typescript-refactorer.md ~/.claude/agents/
 ```
@@ -202,11 +230,13 @@ cp agents/typescript-refactorer.md ~/.claude/agents/
 **Model:** `sonnet` - **Color:** pink
 
 **Example prompts:**
-- *"Add JSDoc to the public billing calculation utilities."*
-- *"Create a README for this API module based on the actual code."*
-- *"Replace these noisy comments with useful why-oriented documentation."*
+
+- _"Add JSDoc to the public billing calculation utilities."_
+- _"Create a README for this API module based on the actual code."_
+- _"Replace these noisy comments with useful why-oriented documentation."_
 
 **Install:**
+
 ```bash
 cp agents/typescript-documenter.md ~/.claude/agents/
 ```
@@ -222,11 +252,13 @@ cp agents/typescript-documenter.md ~/.claude/agents/
 **Model:** `sonnet` - **Color:** purple
 
 **Example prompts:**
-- *"Help me ask this better: make the dashboard faster."*
-- *"Before touching code, help me plan how to add SSO."*
-- *"Refactor the payments module to be cleaner, but first turn that into a concrete plan."*
+
+- _"Help me ask this better: make the dashboard faster."_
+- _"Before touching code, help me plan how to add SSO."_
+- _"Refactor the payments module to be cleaner, but first turn that into a concrete plan."_
 
 **Install:**
+
 ```bash
 cp agents/plan-refiner.md ~/.claude/agents/
 ```
@@ -242,11 +274,13 @@ cp agents/plan-refiner.md ~/.claude/agents/
 **Model:** `sonnet` - **Color:** blue
 
 **Example prompts:**
-- *"Help me understand how authentication works in this repo."*
-- *"Where should I add support for export filters?"*
-- *"Give me a map of the API layer and its dependencies."*
+
+- _"Help me understand how authentication works in this repo."_
+- _"Where should I add support for export filters?"_
+- _"Give me a map of the API layer and its dependencies."_
 
 **Install:**
+
 ```bash
 cp agents/repo-cartographer.md ~/.claude/agents/
 ```
@@ -262,15 +296,139 @@ cp agents/repo-cartographer.md ~/.claude/agents/
 **Model:** `sonnet` - **Color:** cyan
 
 **Example prompts:**
-- *"This services/user.ts is way too big. Split it into logical modules but don't break anything."*
-- *"Claude keeps losing context with utils/api.py — it's 4000 lines. Break it up."*
-- *"Our controllers/main.go mixes handlers, validators, and DB logic. Organize it."*
-- *"Split this file into modules but don't touch how anything is called externally."*
+
+- _"This services/user.ts is way too big. Split it into logical modules but don't break anything."_
+- _"Claude keeps losing context with utils/api.py — it's 4000 lines. Break it up."_
+- _"Our controllers/main.go mixes handlers, validators, and DB logic. Organize it."_
+- _"Split this file into modules but don't touch how anything is called externally."_
 
 **Install:**
+
 ```bash
 cp agents/logical-core-refactor.md ~/.claude/agents/
 ```
+
+---
+
+### `root-cause-debugger`
+
+> Root-cause debugging specialist that reproduces, isolates, and fixes the true cause of a defect.
+
+**When to use it:** When you hit a bug, crash, exception, failing test, wrong output, or regression and want the underlying cause found and the minimal fix applied, with evidence at each step. Language-agnostic.
+
+**Model:** `sonnet` - **Color:** green
+
+**Example prompts:**
+
+- _"I'm getting a TypeError in checkout. Find the cause and fix it."_
+- _"This test passed yesterday and now fails intermittently. Figure out why."_
+- _"Invoices total incorrectly for one customer tier, but no error is thrown."_
+
+**Install:**
+
+```bash
+cp agents/root-cause-debugger.md ~/.claude/agents/
+```
+
+---
+
+### `dependency-upgrader`
+
+> Dependency upgrade and vulnerability remediation specialist for npm, pnpm, and yarn.
+
+**When to use it:** When you need to update dependencies, bump across a major version, resolve breaking changes, fix a security advisory, or reconcile a lockfile, with the project's own build and tests proving the result.
+
+**Model:** `sonnet` - **Color:** orange
+
+**Example prompts:**
+
+- _"npm audit shows a high-severity issue. Fix it safely."_
+- _"Upgrade us from this library v3 to v5 and handle the breaking changes."_
+- _"Our pnpm-lock.yaml has conflicts after merging main. Sort it out."_
+
+**Install:**
+
+```bash
+cp agents/dependency-upgrader.md ~/.claude/agents/
+```
+
+---
+
+### `security-auditor`
+
+> Proactive whole-codebase security auditor focused on exploitable findings.
+
+**When to use it:** When you want a security pass over a codebase or surface area (not just a diff): exposed secrets, broken authentication/authorization, injection, insecure data handling, and OWASP-class risks. For diff/PR-scoped review, use `code-reviewer` instead.
+
+**Model:** `sonnet` - **Color:** purple
+
+**Example prompts:**
+
+- _"We're launching next week. Audit the API and auth layers."_
+- _"Check whether we're leaking any secrets or logging sensitive data."_
+- _"Give me an OWASP-oriented review of the user-facing endpoints."_
+
+**Install:**
+
+```bash
+cp agents/security-auditor.md ~/.claude/agents/
+```
+
+---
+
+### `commit-and-pr-author`
+
+> Commit message and pull request description specialist that writes from the real diff.
+
+**When to use it:** When you want a clean commit message, a logical commit split, or a reviewer-focused PR description derived from the actual diff and history, following your repo's conventions. It never modifies source files.
+
+**Model:** `sonnet` - **Color:** blue
+
+**Example prompts:**
+
+- _"Write a commit message for what I've staged."_
+- _"Draft a PR description for this branch against main."_
+- _"I made a bunch of changes at once. Help me split this into sensible commits."_
+
+**Install:**
+
+```bash
+cp agents/commit-and-pr-author.md ~/.claude/agents/
+```
+
+---
+
+## Available skills
+
+Skills are reusable workflows that run in your main Claude Code conversation. Install one by copying its directory:
+
+```bash
+# Available globally (all projects)
+cp -r skills/<name> ~/.claude/skills/
+
+# Available only for the current project
+cp -r skills/<name> .claude/skills/
+```
+
+| Skill                                                  | Purpose                                                                                                             |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| [`new-agent`](./skills/new-agent/SKILL.md)             | Scaffold a new agent in this library following the authoring guide, then register it in README.md.                  |
+| [`validate-agents`](./skills/validate-agents/SKILL.md) | Validate that every agent has well-formed frontmatter and is documented in README.md (enforces the CLAUDE.md rule). |
+| [`release-notes`](./skills/release-notes/SKILL.md)     | Generate release notes / a CHANGELOG entry from commits since the last tag.                                         |
+
+After copying, restart Claude Code or run `/help` to see the new command.
+
+---
+
+## Available hooks
+
+Hooks are deterministic automation that runs on Claude Code events. Each is a shell script plus a settings snippet. To install one: copy its script into `.claude/hooks/`, make it executable, and merge its `settings.snippet.json` into `.claude/settings.json`. Review any hook before enabling it — hooks run shell commands automatically.
+
+| Hook                                                         | Event       | Purpose                                                                                           |
+| ------------------------------------------------------------ | ----------- | ------------------------------------------------------------------------------------------------- |
+| [`agent-readme-guard`](./hooks/agent-readme-guard/README.md) | PostToolUse | Reminds you to update README.md when an `agents/*.md` file changes.                               |
+| [`format-on-edit`](./hooks/format-on-edit/README.md)         | PostToolUse | Runs Prettier (and `eslint --fix` for JS/TS) on each edited file; no-ops if the tools are absent. |
+| [`block-secret-edits`](./hooks/block-secret-edits/README.md) | PreToolUse  | Blocks edits to sensitive files and Bash commands that would commit them.                         |
 
 ---
 
@@ -298,15 +456,29 @@ claude-code-agents/
 |   +-- ci-cd-pipeline-builder.md
 |   +-- claude-code-expert.md
 |   +-- code-reviewer.md
+|   +-- commit-and-pr-author.md
+|   +-- dependency-upgrader.md
 |   +-- logical-core-refactor.md
 |   +-- plan-refiner.md
 |   +-- repo-cartographer.md
+|   +-- root-cause-debugger.md
+|   +-- security-auditor.md
 |   +-- test-engineer.md
 |   +-- typescript-documenter.md
 |   +-- typescript-feature-builder.md
 |   +-- typescript-refactorer.md
++-- skills/
+|   +-- new-agent/
+|   +-- release-notes/
+|   +-- validate-agents/
++-- hooks/
+|   +-- agent-readme-guard/
+|   +-- block-secret-edits/
+|   +-- format-on-edit/
 +-- docs/
 |   +-- agent-authoring-guide.md
+|   +-- hook-authoring-guide.md
+|   +-- skill-authoring-guide.md
 +-- claude-code-cheatsheet.html
 +-- README.md
 ```
@@ -319,4 +491,4 @@ If you have a useful agent you would like to share, open a PR with the `.md` fil
 
 ---
 
-*Built with Claude Code*
+_Built with Claude Code_
