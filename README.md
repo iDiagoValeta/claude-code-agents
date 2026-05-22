@@ -56,6 +56,9 @@ They document the local format conventions and the official Anthropic references
 | [`dependency-upgrader`](./agents/dependency-upgrader.md)               | Update dependencies, resolve breaking changes, remediate vulnerabilities, and keep lockfiles deterministic, verified by the project's own checks. |
 | [`logical-core-refactor`](./agents/logical-core-refactor.md)           | Split very large files into logical modules while preserving the original public API surface as a facade.                                         |
 | [`plan-refiner`](./agents/plan-refiner.md)                             | Turn broad, ambiguous, high-risk, or underspecified requests into executable briefs, assumptions, acceptance criteria, and handoff prompts.       |
+| [`jupyter-notebook-cleaner`](./agents/jupyter-notebook-cleaner.md)     | Clean, reorganize, and document Jupyter notebooks: fix execution order, consolidate imports, add section headers, and remove dead cells.          |
+| [`python-refactorer`](./agents/python-refactorer.md)                   | Refactor existing Python code for structure, readability, maintainability, and responsibility boundaries while preserving behavior.               |
+| [`rag-pipeline-debugger`](./agents/rag-pipeline-debugger.md)           | Debug RAG pipelines stage by stage: chunking, embedding, vector store, retrieval, reranking, prompt assembly, and LLM response.                  |
 | [`repo-cartographer`](./agents/repo-cartographer.md)                   | Map unfamiliar repositories, feature flows, module boundaries, dependency paths, and safe insertion points.                                       |
 | [`root-cause-debugger`](./agents/root-cause-debugger.md)               | Reproduce, isolate, and find the root cause of a bug, then apply the minimal verified fix. Language-agnostic.                                     |
 | [`security-auditor`](./agents/security-auditor.md)                     | Proactively audit a whole codebase for secrets, broken authz, injection, and OWASP-class risks, with exploit paths and remediation.               |
@@ -398,6 +401,72 @@ cp agents/commit-and-pr-author.md ~/.claude/agents/
 
 ---
 
+### `python-refactorer`
+
+> Python refactoring specialist focused on behavior preservation and incremental cleanup.
+
+**When to use it:** When you need to improve existing Python structure, readability, maintainability, dependency boundaries, or duplication while preserving current behavior with tests or characterization coverage. Covers scripts, packages, data-science pipelines, and ML code.
+
+**Model:** `sonnet` - **Color:** white
+
+**Example prompts:**
+
+- _"Refactor this data-loading script without changing behavior."_
+- _"Split this large Python module into clearer responsibilities."_
+- _"Replace these ad-hoc dicts with dataclasses, but add tests first."_
+
+**Install:**
+
+```bash
+cp agents/python-refactorer.md ~/.claude/agents/
+```
+
+---
+
+### `rag-pipeline-debugger`
+
+> RAG pipeline debugging specialist that diagnoses each stage and applies the narrowest correct fix.
+
+**When to use it:** When a retrieval-augmented generation system returns wrong answers, misses relevant documents, hallucinates, or produces poor context quality. Covers chunking, embedding, vector store indexing, retrieval parameters, reranking, prompt assembly, and LLM response.
+
+**Model:** `sonnet` - **Color:** pink
+
+**Example prompts:**
+
+- _"My RAG chatbot keeps returning unrelated documents for specific queries."_
+- _"The pipeline retrieves the right chunks but the LLM still gives wrong answers."_
+- _"After updating the documents, answers are still stale. Find the cause."_
+
+**Install:**
+
+```bash
+cp agents/rag-pipeline-debugger.md ~/.claude/agents/
+```
+
+---
+
+### `jupyter-notebook-cleaner`
+
+> Jupyter notebook quality specialist for reproducibility, structure, and shareability.
+
+**When to use it:** When you want to clean, reorganize, or prepare a Jupyter notebook for sharing, code review, or publication. Handles execution-order issues, scattered imports, missing markdown headers, dead/debug cells, oversized outputs, and utility code that belongs in a `.py` file.
+
+**Model:** `sonnet` - **Color:** yellow
+
+**Example prompts:**
+
+- _"Clean up this training notebook before I push it to GitHub."_
+- _"This notebook has cells out of order and no section headers. Fix it."_
+- _"Remove all the debug prints and make sure imports are at the top."_
+
+**Install:**
+
+```bash
+cp agents/jupyter-notebook-cleaner.md ~/.claude/agents/
+```
+
+---
+
 ## Available skills
 
 Skills are reusable workflows that run in your main Claude Code conversation. Install one by copying its directory:
@@ -426,9 +495,10 @@ Hooks are deterministic automation that runs on Claude Code events. Each is a sh
 
 | Hook                                                         | Event       | Purpose                                                                                           |
 | ------------------------------------------------------------ | ----------- | ------------------------------------------------------------------------------------------------- |
-| [`agent-readme-guard`](./hooks/agent-readme-guard/README.md) | PostToolUse | Reminds you to update README.md when an `agents/*.md` file changes.                               |
-| [`format-on-edit`](./hooks/format-on-edit/README.md)         | PostToolUse | Runs Prettier (and `eslint --fix` for JS/TS) on each edited file; no-ops if the tools are absent. |
-| [`block-secret-edits`](./hooks/block-secret-edits/README.md) | PreToolUse  | Blocks edits to sensitive files and Bash commands that would commit them.                         |
+| [`agent-readme-guard`](./hooks/agent-readme-guard/README.md)               | PostToolUse | Reminds you to update README.md when an `agents/*.md` file changes.                               |
+| [`block-secret-edits`](./hooks/block-secret-edits/README.md)               | PreToolUse  | Blocks edits to sensitive files and Bash commands that would commit them.                         |
+| [`format-on-edit`](./hooks/format-on-edit/README.md)                       | PostToolUse | Runs Prettier (and `eslint --fix` for JS/TS) on each edited file; no-ops if the tools are absent. |
+| [`strip-notebook-outputs`](./hooks/strip-notebook-outputs/README.md)       | PostToolUse | Strips cell outputs from `.ipynb` files after each edit; no-ops safely when nbstripout is absent. |
 
 ---
 
@@ -458,8 +528,11 @@ claude-code-agents/
 |   +-- code-reviewer.md
 |   +-- commit-and-pr-author.md
 |   +-- dependency-upgrader.md
+|   +-- jupyter-notebook-cleaner.md
 |   +-- logical-core-refactor.md
 |   +-- plan-refiner.md
+|   +-- python-refactorer.md
+|   +-- rag-pipeline-debugger.md
 |   +-- repo-cartographer.md
 |   +-- root-cause-debugger.md
 |   +-- security-auditor.md
@@ -475,6 +548,7 @@ claude-code-agents/
 |   +-- agent-readme-guard/
 |   +-- block-secret-edits/
 |   +-- format-on-edit/
+|   +-- strip-notebook-outputs/
 +-- docs/
 |   +-- agent-authoring-guide.md
 |   +-- hook-authoring-guide.md
