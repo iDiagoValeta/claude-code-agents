@@ -2,6 +2,8 @@
 
 A collection of personal agents for [Claude Code](https://claude.ai/code), Anthropic's official CLI.
 
+> **Context.** Built in March 2026 as a personal project, when I was working at Grupo CEU and finishing my Computer Engineering degree at UPV. It is a library of agents, skills and hooks for Claude Code that I kept extending until May 2026.
+
 ---
 
 ## What is this?
